@@ -1,5 +1,5 @@
 import random
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Optional
 
 from .constants import (
     GRID_WIDTH,
@@ -30,7 +30,7 @@ def weighted_choice(items: List[ItemDef]) -> ItemDef:
 
 
 class Dungeon:
-    def __init__(self, level: int = 1, rng_seed: int | None = None) -> None:
+    def __init__(self, level: int = 1, rng_seed: Optional[int] = None) -> None:
         self.level = level
         if rng_seed is not None:
             random.seed(rng_seed)
@@ -39,8 +39,8 @@ class Dungeon:
         self.tiles: List[List[int]] = [[TILE_WALL for _ in range(self.width)] for _ in range(self.height)]
         self.items_by_pos: Dict[Tuple[int, int], Item] = {}
         self.player_start: Tuple[int, int] = (1, 1)
-        self.shop_pos: Tuple[int, int] | None = None
-        self.stairs_pos: Tuple[int, int] | None = None
+        self.shop_pos: Optional[Tuple[int, int]] = None
+        self.stairs_pos: Optional[Tuple[int, int]] = None
         self._generate_map()
         self._place_shop_and_stairs()
         self._scatter_items()
@@ -163,5 +163,5 @@ class Dungeon:
             return False
         return self.tiles[y][x] in (TILE_FLOOR, TILE_SHOP, TILE_STAIRS)
 
-    def try_pick_item(self, x: int, y: int) -> Item | None:
+    def try_pick_item(self, x: int, y: int) -> Optional[Item]:
         return self.items_by_pos.pop((x, y), None)

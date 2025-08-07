@@ -1,7 +1,12 @@
 import sys
+import os
 import pygame
 
-from .constants import (
+# Allow running as a script: add project root to sys.path
+if __package__ is None or __package__ == "":
+    sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+from game.constants import (
     WINDOW_WIDTH,
     WINDOW_HEIGHT,
     FPS,
@@ -18,9 +23,9 @@ from .constants import (
     COLOR_SHOP,
     COLOR_STAIRS,
 )
-from .entities import Player
-from .dungeon import Dungeon
-from .ui import draw_hud, draw_inventory_overlay, draw_shop_prompt
+from game.entities import Player
+from game.dungeon import Dungeon
+from game.ui import draw_hud, draw_inventory_overlay, draw_shop_prompt
 
 
 def draw_map(surface: pygame.Surface, dungeon: Dungeon) -> None:
